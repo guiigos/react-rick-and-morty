@@ -1,15 +1,7 @@
-import Card from "./Card";
-import Info from "./Info";
-import Error from "./Error";
-import Search from "./Search";
-import Loading from "./Loading";
-import Pagination from "./Paginations";
+import Statuses from "./fragments/Statuses";
+import Pagination from "./fragments/Paginations";
 
 export {
-  Card,
-  Info,
-  Error,
-  Search,
-  Loading,
+  Statuses,
   Pagination,
 };

@@ -5,6 +5,11 @@ declare type ResponseApiInfoType = {
   prev?: string,
 };
 
+declare type ResponseApiAllCharactersType = {
+  info: ResponseApiInfoType,
+  results: CharacterType[],
+}
+
 declare type CharacterType = {
   id: number,
   name: string,
@@ -23,6 +28,9 @@ declare type CharacterDetailType = {
   },
   episode: string[],
 };
+
+
+
 
 declare type EpisodesType = {
   id: number,

@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useGetAllEpisodesQuery } from "../../context/store";
-import { Pagination } from "../../components";
+import {
+  Statuses,
+  Pagination,
+ } from "../../components";
+ import Card from "./components/Card";
 
 const Episodes: React.FC = (): React.ReactElement => {
-  const navigate = useNavigate();
+
   const [page, setPage] = useState<number>(1);
+  const [episodes, setEpisodes] = useState([]);
+  const [option, setOption] = useState();
 
   const {
     data
@@ -13,12 +18,30 @@ const Episodes: React.FC = (): React.ReactElement => {
     page
   });
 
-  function handleClick(id: number): void {
-    navigate(`/episodes/${id}`);
-  }
+  useEffect(() => {
+    console.log(data);
+
+    if (data?.results) {
+      // TODO: Encontrar uma maneira mais elegante de concatenação
+      setEpisodes((current) => [...current, ...data?.results]);
+    }
+
+    if (data?.info.next) {
+      // TODO: Fazer a chamada através do link que vem na requisição
+      setPage((current) => current + 1);
+    }
+  }, [data]);
 
   return (
     <React.Fragment>
+      <select onChange={(event) => {
+        const { characters } = episodes.find(({ id }) => id === event.target.value);
+        console.log(characters);
+      }}>
+        {episodes.map(({ id, episode, name }) => (<option key={id} value={id}>{episode} - {name}</option>))}
+      </select>
+
+      {/*
       <Pagination
         total={data?.info.pages}
         current={page}
@@ -27,8 +50,9 @@ const Episodes: React.FC = (): React.ReactElement => {
         onNext={() => setPage((current) => current + 1)}
         onPrev={() => setPage((current) => current - 1)}
         onPage={setPage} />
+      */}
 
-      {data?.results.map((element) => <p key={element.id} className="cursor-pointer" onClick={() => handleClick(element.id)}>{element.episode} - {element.name}</p>)}
+      {/* {data?.results.map((element: EpisodesType) => <Card key={element.id} {...element} />)} */}
     </React.Fragment>
   )
 }

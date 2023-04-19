@@ -28,6 +28,9 @@ After installing the dependencies the application is ready to run.
 ```bash
 # Start
 $ npm start
+
+# Deploy GH pages
+$ npm run deploy
 ```
 
 ## License

@@ -7,12 +7,17 @@ type SearchProps = {
   onOption: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
-const Search: React.FC<SearchProps> = ({ placeholder, value, onChange, onOption }) => (
+const Search: React.FC<SearchProps> = ({ 
+  placeholder, 
+  value, 
+  onChange, 
+  onOption,
+}) => (
   <div className="bg-yellow-600 rounded-lg flex flex-row flex-nowrap justify-between p-2 m-2">
     <input
-      className="w-full p-2"
       type="search"
       placeholder={placeholder}
+      className="w-full p-2"
       value={value}
       onChange={onChange} />
 

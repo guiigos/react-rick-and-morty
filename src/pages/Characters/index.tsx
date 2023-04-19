@@ -1,22 +1,20 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import {
-  useFilter,
-  useGetAllCharactersQuery,
+  setPage,
   pageNext,
   pagePrev,
-  setPage,
   setSearch,
+  useFilter,
   setOption,
+  useGetAllCharactersQuery,
 } from "../../context/store";
 import {
-  Card,
-  Info,
-  Error,
-  Search,
-  Loading,
+  Statuses,
   Pagination,
 } from "../../components";
+import Search from "./components/Search";
+import Card from "./components/Card";
 
 const Characters: React.FC = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -29,31 +27,42 @@ const Characters: React.FC = (): React.ReactElement => {
     isFetching,
   } = useGetAllCharactersQuery(filter);
 
-  function onChangeFilter(event: React.ChangeEvent<HTMLInputElement>): void {
+  const onChangeFilter = (event: React.ChangeEvent<HTMLInputElement>) => 
     dispatch(setSearch(event.target.value));
-  }
-
-  function onOptionFilter(event: React.ChangeEvent<HTMLSelectElement>): void {
+    
+  const onOptionFilter = (event: React.ChangeEvent<HTMLSelectElement>) =>
     dispatch(setOption(event.target.value as FilterOptionType));
-  }
 
-  function onNext(): void {
-    dispatch(pageNext());
-  }
+  const renderStatuses = useCallback((): React.ReactElement => {
+    if (isError) {
+      return (
+        <Statuses 
+          type="error" 
+          label="Not found" 
+          value={`${filter.search} with ${filter.option}`} />
+      );
+    }
 
-  function onPrev(): void {
-    dispatch(pagePrev());
-  }
+    if (isLoading || isFetching) {
+      return (
+        <Statuses 
+          type="warning" 
+          label="Await"
+          value="loading..."/>
+      );
+    }
 
-  function onPage(page: number): void {
-    dispatch(setPage(page));
-  }
-
+    return (
+      <Statuses
+        type="information"
+        label="Total Characters"
+        value={`${data?.info.count} found`} />
+    );
+  }, [isError, isLoading, isFetching, data]);
+  
   return (
     <React.Fragment>
-      <Info
-        label="Total Characters"
-        value={data?.info.count} />
+      {renderStatuses()}
 
       <Search
         placeholder="Search"
@@ -66,18 +75,15 @@ const Characters: React.FC = (): React.ReactElement => {
         current={filter.page}
         hasNext={!!data?.info.next}
         hasPrev={!!data?.info.prev}
-        onNext={onNext}
-        onPrev={onPrev}
-        onPage={onPage} />
-
-      {(isLoading || isFetching) && <Loading />}
-      {isError && <Error />}
+        onNext={() => dispatch(pageNext())}
+        onPrev={() => dispatch(pagePrev())}
+        onPage={(page: number) => dispatch(setPage(page))} />
 
       <div className='grow flex flex-wrap justify-center gap-2 p-2'>
-        {data?.results?.map((element: CharacterType) => (<Card key={element.id} {...element} />))}
+        {data?.results?.map((element: CharacterType) => <Card key={element.id} {...element} />)}
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
 export default Characters;

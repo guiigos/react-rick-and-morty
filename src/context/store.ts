@@ -1,9 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { useSelector } from "react-redux";
-import charactersAPI, { useGetAllCharactersQuery, useLazyGetOneCharacterQuery, useGetMultipleCharactersQuery } from "./reducers/character";
-import episodesAPI, { useGetAllEpisodesQuery, useGetOneEpisodeQuery } from "./reducers/episode";
-import filterSlice, { pageNext, pagePrev, setPage, setSearch, setOption } from "./slices/filter";
+
+import charactersAPI, {
+  useGetAllCharactersQuery,
+  useLazyGetOneCharacterQuery,
+  useGetMultipleCharactersQuery,
+} from "./reducers/character";
+
+import episodesAPI, {
+  useGetAllEpisodesQuery,
+  useGetOneEpisodeQuery,
+} from "./reducers/episode";
+
+import filterSlice, {
+  pageNext,
+  pagePrev,
+  setPage,
+  setSearch,
+  setOption,
+} from "./slices/filter";
 
 export const store = configureStore({
   reducer: {

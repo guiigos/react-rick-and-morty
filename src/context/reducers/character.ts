@@ -6,10 +6,7 @@ const charactersAPI = createApi({
     baseUrl: "https://rickandmortyapi.com/api",
   }),
   endpoints: (builder) => ({
-    getAllCharacters: builder.query<{
-      info: ResponseApiInfoType,
-      results: CharacterType[],
-    }, FilterType>({
+    getAllCharacters: builder.query<ResponseApiAllCharactersType, FilterType>({
       query: ({ page, search, option }) => ({
         method: "GET",
         url: `/character?page=${page}&${option}=${search}`,
@@ -21,6 +18,9 @@ const charactersAPI = createApi({
         url: `/character/${id}`,
       }),
     }),
+
+
+
     getMultipleCharacters: builder.query({
       query: (ids) => ({
         url: `/character/${ids}`,
