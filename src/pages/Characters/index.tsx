@@ -27,26 +27,26 @@ const Characters: React.FC = (): React.ReactElement => {
     isFetching,
   } = useGetAllCharactersQuery(filter);
 
-  const onChangeFilter = (event: React.ChangeEvent<HTMLInputElement>) => 
+  const onChangeFilter = (event: React.ChangeEvent<HTMLInputElement>) =>
     dispatch(setSearch(event.target.value));
-    
+
   const onOptionFilter = (event: React.ChangeEvent<HTMLSelectElement>) =>
     dispatch(setOption(event.target.value as FilterOptionType));
 
   const renderStatuses = useCallback((): React.ReactElement => {
     if (isError) {
       return (
-        <Statuses 
-          type="error" 
-          label="Not found" 
+        <Statuses
+          type="error"
+          label="Not found"
           value={`${filter.search} with ${filter.option}`} />
       );
     }
 
     if (isLoading || isFetching) {
       return (
-        <Statuses 
-          type="warning" 
+        <Statuses
+          type="warning"
           label="Await"
           value="loading..."/>
       );
@@ -59,7 +59,7 @@ const Characters: React.FC = (): React.ReactElement => {
         value={`${data?.info.count} found`} />
     );
   }, [isError, isLoading, isFetching, data]);
-  
+
   return (
     <React.Fragment>
       {renderStatuses()}
@@ -69,6 +69,8 @@ const Characters: React.FC = (): React.ReactElement => {
         value={filter.search}
         onChange={onChangeFilter}
         onOption={onOptionFilter} />
+
+      <div>TODO test element</div>
 
       <Pagination
         total={data?.info.pages}
